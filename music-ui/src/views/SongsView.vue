@@ -1,15 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { callAPI } from '../api/dbapi'
 
+const url = 'songs?_limit=10'
 const songs = ref(null)
+
 onMounted(async () => {
-    try {
-        const res = await fetch('http://localhost:5000/songs?_limit=10')
-        songs.value = (await res.json())
-    } catch(err) {
-        songs.value = null
-        console.log('Error! could not reach the API')
-    }
+    songs.value = await callAPI(url)
 })
 </script>
 
