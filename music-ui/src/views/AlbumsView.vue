@@ -30,11 +30,12 @@ async function doSort(col) {
   <div>Albums View</div>
   <div><table>
     <thead><tr>
+        <th @click="doSort(`artist_id`)">Artist Id</th>
         <th @click="doSort(`name`)">Name</th>
         <th @click="doSort(`year_released`)">Year Released</th>
     </tr></thead>
     <tbody>
-        <tr v-for="album in albums"><td>{{ album.name }}</td><td>{{ album.year_released }}</td></tr>
+        <tr v-for="album in albums"><td>{{ album.artist_id }}</td><td>{{ album.name }}</td><td>{{ album.year_released }}</td></tr>
     </tbody>
   </table></div>
   <!--<p v-for="album in albums">{{ album }}</p>-->
