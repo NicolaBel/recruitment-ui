@@ -5,7 +5,7 @@ import Paging from '../components/Paging.vue';
 
 // declarations
 const albums = ref(null)
-const baseUrl = 'albums?_limit=10'
+const baseUrl = 'albums?_limit=10&_expand=artist'
 let sortUrl = ''
 let sortBy = 'asc'
 let page = ref(1)
@@ -15,6 +15,7 @@ let pageUrl = ref(computed({
     }
     //no setter, readonly
 }))
+let showName= ref(false)
 
 // functions
 async function pagePrev() {
@@ -27,6 +28,7 @@ async function pageNext() {
 }
 
 async function doSort(col) {
+    showName.value = false//reset, cannot sorting by this column, at this time
     sortUrl = '&_sort='+col
     if (sortBy == 'asc') {
         sortUrl = sortUrl+'&_order=asc'
@@ -50,6 +52,7 @@ onMounted(async () => {
 <template>
   <div>Albums View</div>
   <Paging :cur-page="page" @prev-Page="pagePrev" @next-Page="pageNext"/>
+  <button type="button" @click="showName = !showName">Show Artist name</button>
   <div><table>
     <thead><tr>
         <th @click="doSort(`artist_id`)">Artist Id</th>
@@ -57,7 +60,12 @@ onMounted(async () => {
         <th @click="doSort(`year_released`)">Year Released</th>
     </tr></thead>
     <tbody>
-        <tr v-for="album in albums"><td>{{ album.artist_id }}</td><td>{{ album.name }}</td><td>{{ album.year_released }}</td></tr>
+        <tr v-for="album in albums">
+            <td v-if="showName">{{ album.artist.name }}</td>
+            <td v-else>{{ album.artist_id }}</td>
+            <td>{{ album.name }}</td>
+            <td>{{ album.year_released }}</td>
+        </tr>
     </tbody>
   </table></div>
 </template>
