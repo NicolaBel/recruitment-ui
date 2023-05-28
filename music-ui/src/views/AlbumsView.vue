@@ -52,7 +52,10 @@ onMounted(async () => {
 <template>
   <div>Albums View</div>
   <Paging :cur-page="page" @prev-Page="pagePrev" @next-Page="pageNext"/>
-  <button type="button" @click="showName = !showName">Show Artist name</button>
+  <div>
+    <input type="checkbox" id="showNameArtist" value={{showName}} v-model="showName">
+    <label for="showNameArtist">Show Artist name</label>
+  </div>
   <div><table>
     <thead><tr>
         <th @click="doSort(`artist_id`)">Artist Id</th>
