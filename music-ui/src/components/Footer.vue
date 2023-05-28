@@ -3,6 +3,6 @@
 
 <template>
   <div>
-    <h5>footer here</h5>
+    <h6>created by Nicola Beleznay</h6>
   </div>
 </template>
