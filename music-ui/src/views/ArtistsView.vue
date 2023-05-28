@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { callAPI } from '../api/dbapi'
+import { apiGet } from '../api/dbapi'
 
 const url = 'artists?_limit=10'
 const artists = ref(null)
 
 onMounted(async () => {
-    artists.value = await callAPI(url)
+    artists.value = await apiGet(url)
 })
 </script>
 

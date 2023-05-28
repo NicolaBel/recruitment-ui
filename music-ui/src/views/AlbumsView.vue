@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { callAPI } from '../api/dbapi'
+import { apiGet } from '../api/dbapi'
 import Paging from '../components/Paging.vue';
 
 // declarations
@@ -20,11 +20,11 @@ let showName= ref(false)
 // functions
 async function pagePrev() {
     page.value--
-    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+    albums.value = await apiGet(baseUrl+pageUrl.value+sortUrl)
 }
 async function pageNext() {
     page.value++
-    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+    albums.value = await apiGet(baseUrl+pageUrl.value+sortUrl)
 }
 
 async function doSort(col) {
@@ -40,12 +40,12 @@ async function doSort(col) {
         sortUrl = ''
         sortBy = 'asc'
     }
-    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+    albums.value = await apiGet(baseUrl+pageUrl.value+sortUrl)
 }
 
 // setup
 onMounted(async () => {
-    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+    albums.value = await apiGet(baseUrl+pageUrl.value+sortUrl)
 })
 </script>
 

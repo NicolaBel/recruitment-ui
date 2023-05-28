@@ -1,6 +1,6 @@
 <script setup>
 import { toRefs, ref, onMounted } from 'vue';
-import { callAPI } from '../api/dbapi'
+import { apiGet } from '../api/dbapi'
 import { RouterLink } from 'vue-router';
 
 const props = defineProps({
@@ -12,7 +12,7 @@ const { linkto, linkid } = toRefs(props)
 const url = linkto.value+'/'+linkid.value
 const link = ref(null)
 onMounted(async () => {
-    link.value = await callAPI(url)
+    link.value = await apiGet(url)
 })
 </script>
 
