@@ -1,33 +1,52 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { callAPI } from '../api/dbapi'
+import Paging from '../components/Paging.vue';
 
 const baseUrl = 'albums?_limit=10'
 const albums = ref(null)
 
+let page = ref(1)
+let pageUrl = ref(computed({
+    get() {
+        return '&_page='+page.value
+    }
+}))
+async function pagePrev() {
+    page.value--
+    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+}
+async function pageNext() {
+    page.value++
+    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+}
+
 onMounted(async () => {
-    albums.value = await callAPI(baseUrl)
+    albums.value = await callAPI(baseUrl+pageUrl.value)
 })
 
 let sortUrl = ''
 let sortBy = 'asc'
 async function doSort(col) {
-    sortUrl = baseUrl+'&_sort='+col
+    sortUrl = '&_sort='+col
     if (sortBy == 'asc') {
         sortUrl = sortUrl+'&_order=asc'
         sortBy = 'desc'
-    } else {
+    } else if (sortBy == 'desc') {
         sortUrl = sortUrl+'&_order=desc'
         sortBy = 'asc'
+    } else {
+        sortUrl = ''
+        sortBy = 'asc'
     }
-    console.log(sortUrl)
-    albums.value = await callAPI(sortUrl)
+    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
 }
 
 </script>
 
 <template>
   <div>Albums View</div>
+  <Paging :cur-page="page" @prev-Page="pagePrev" @next-Page="pageNext"/>
   <div><table>
     <thead><tr>
         <th @click="doSort(`artist_id`)">Artist Id</th>
