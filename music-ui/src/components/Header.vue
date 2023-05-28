@@ -3,6 +3,6 @@
 
 <template>
   <div>
-    <h1>Header here</h1>
+    <h1>Music Database</h1>
   </div>
 </template>
