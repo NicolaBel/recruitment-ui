@@ -3,15 +3,20 @@ import { ref, onMounted, computed } from 'vue'
 import { callAPI } from '../api/dbapi'
 import Paging from '../components/Paging.vue';
 
-const baseUrl = 'albums?_limit=10'
+// declarations
 const albums = ref(null)
-
+const baseUrl = 'albums?_limit=10'
+let sortUrl = ''
+let sortBy = 'asc'
 let page = ref(1)
 let pageUrl = ref(computed({
     get() {
         return '&_page='+page.value
     }
+    //no setter, readonly
 }))
+
+// functions
 async function pagePrev() {
     page.value--
     albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
@@ -21,12 +26,6 @@ async function pageNext() {
     albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
 }
 
-onMounted(async () => {
-    albums.value = await callAPI(baseUrl+pageUrl.value)
-})
-
-let sortUrl = ''
-let sortBy = 'asc'
 async function doSort(col) {
     sortUrl = '&_sort='+col
     if (sortBy == 'asc') {
@@ -42,6 +41,10 @@ async function doSort(col) {
     albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
 }
 
+// setup
+onMounted(async () => {
+    albums.value = await callAPI(baseUrl+pageUrl.value+sortUrl)
+})
 </script>
 
 <template>
@@ -57,5 +60,4 @@ async function doSort(col) {
         <tr v-for="album in albums"><td>{{ album.artist_id }}</td><td>{{ album.name }}</td><td>{{ album.year_released }}</td></tr>
     </tbody>
   </table></div>
-  <!--<p v-for="album in albums">{{ album }}</p>-->
 </template>
