@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { apiGet } from '../api/dbapi'
+import BaseView from '../components/BaseView.vue';
 import Paging from '../components/Paging.vue';
 
 // declarations
@@ -50,25 +51,31 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>Albums View</div>
-  <Paging :cur-page="page" @prev-Page="pagePrev" @next-Page="pageNext"/>
-  <div>
-    <input type="checkbox" id="showNameArtist" value={{showName}} v-model="showName">
-    <label for="showNameArtist">Show Artist name</label>
-  </div>
-  <div><table>
-    <thead><tr>
-        <th @click="doSort(`artist_id`)">Artist Id</th>
-        <th @click="doSort(`name`)">Name</th>
-        <th @click="doSort(`year_released`)">Year Released</th>
-    </tr></thead>
-    <tbody>
-        <tr v-for="album in albums">
+  <BaseView>
+    <template #heading>Albums View</template>
+    <Paging :cur-page="page" @prev-Page="pagePrev" @next-Page="pageNext"/>
+    <div>
+      <input type="checkbox" id="showNameArtist" value={{showName}} v-model="showName">
+      <label for="showNameArtist">Show Artist name</label>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th @click="doSort(`artist_id`)">Artist Id</th>
+            <th @click="doSort(`name`)">Name</th>
+            <th @click="doSort(`year_released`)">Year Released</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="album in albums">
             <td v-if="showName">{{ album.artist.name }}</td>
             <td v-else>{{ album.artist_id }}</td>
             <td>{{ album.name }}</td>
             <td>{{ album.year_released }}</td>
-        </tr>
-    </tbody>
-  </table></div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </BaseView>
 </template>
