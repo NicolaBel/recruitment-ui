@@ -1,7 +1,10 @@
 <script setup>
 import { toRefs, ref, onMounted, computed } from 'vue'
 import { apiGet } from '../api/dbapi'
-import Paging from '../components/Paging.vue';
+import Paging from '../components/Paging.vue'
+
+//page return limit
+const limit = '5'
 
 const props = defineProps({
     dbTable: String,
@@ -18,7 +21,7 @@ const { dbTable, dbTableParent, dbTableHeadings } = toRefs(props)
 const items = ref(null)
 let baseURL = ref(computed({
     get() {
-        return dbTableParent.value ? dbTable.value+'?_limit=10&_expand='+dbTableParent.value : dbTable.value+'?_limit=10'
+        return dbTableParent.value ? dbTable.value+'?_limit='+limit+'&_expand='+dbTableParent.value : dbTable.value+'?_limit='+limit
     }
 }))
 let sortURL = ''
@@ -31,13 +34,28 @@ let pageURL = ref(computed({
 }))
 
 //functions
+async function getItems() {
+    const res = await apiGet(baseURL.value+pageURL.value+sortURL)
+    if (res.ok) {
+        items.value = res.body
+    } else {
+        items.value = null
+        console.log(res)
+    }
+    //console.log(...res.headers)
+    if (res.headers.has('Link') && (res.headers.get('Link') != '')) { 
+            const links = res.headers.get('Link')
+            //console.log(links)
+        }
+}
+
 async function pagePrev() {
     page.value--
-    items.value = await apiGet(baseURL.value+pageURL.value+sortURL)
+    getItems()
 }
 async function pageNext() {
     page.value++
-    items.value = await apiGet(baseURL.value+pageURL.value+sortURL)
+    getItems()
 }
 async function doSort(col) {
     emit('doSortReset')
@@ -52,12 +70,12 @@ async function doSort(col) {
         sortURL = ''
         sortBy = 'asc'
     }
-    items.value = await apiGet(baseURL.value+pageURL.value+sortURL)
+    getItems()
 }
 
 // setup
 onMounted(async () => {
-    items.value = await apiGet(baseURL.value+pageURL.value+sortURL)
+    getItems()
 })
 </script>
 

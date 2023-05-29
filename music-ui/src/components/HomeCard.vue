@@ -12,7 +12,13 @@ const { linkTo, linkId } = toRefs(props)
 const url = linkTo.value+'/'+linkId.value
 const link = ref(null)
 onMounted(async () => {
-    link.value = await apiGet(url)
+    const res = await apiGet(url)
+    if (res.ok) {
+        link.value = res.body
+    } else {
+        link.value = null
+        console.log(res)
+    }
 })
 </script>
 

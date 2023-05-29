@@ -3,25 +3,37 @@ const BASE_API_URL = "http://localhost:5000/"
 const AUTH_BEARER = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 
 export async function apiGet (url) {
-    let ret = null
+    let res
     try {
-        const res = await fetch(BASE_API_URL+url, {
+        res = await fetch(BASE_API_URL+url, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+AUTH_BEARER
             }
         })
-        ret = (await res.json())
+        //res = (await res.json())
     } catch(err) {
-        ret = null
-        console.log('Error! could not reach the API')
-        console.log(err)
+        res = {
+            ok: false,
+            status: 500,
+            headers: '',
+            json: async () => { return {
+                code: 500,
+                message: 'Error! Could not reach the API',
+                description: err
+            }}
+        }
     }
-    return ret
+    return {
+        ok: res.ok,
+        status: res.status,
+        headers: res.headers,
+        body: res.status !== 204 ? await res.json() : null
+    }
 }
 /* for future use
 export async function apiPost (url,body) {
-    let ret = null
+    let res = null
     try {
         const res = await fetch(BASE_API_URL+url, {
             method: 'POST',
@@ -31,12 +43,12 @@ export async function apiPost (url,body) {
             },
             body: body ? JSON.stringify(body) : null
         })
-        ret = (await res.json())
+        res = (await res.json())
     } catch(err) {
-        ret = null
+        res = null
         console.log('Error! could not reach the API')
         console.log(err)
     }
-    return ret
+    return res
 }
 */
