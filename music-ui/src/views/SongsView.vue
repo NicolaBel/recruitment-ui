@@ -1,19 +1,32 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { apiGet } from '../api/dbapi'
 import BaseView from '../components/BaseView.vue';
+import ApiView from '../components/ApiView.vue';
 
-const url = 'songs?_limit=10'
-const songs = ref(null)
-
-onMounted(async () => {
-    songs.value = await apiGet(url)
-})
+const titles = [
+    {
+        sortBy: 'album_id',
+        col: 'Album Id'
+    },
+    {
+        sortBy: 'track',
+        col: 'Track #'
+    },
+    {
+        sortBy: 'name',
+        col: 'Song Name'
+    }
+]
 </script>
 
 <template>
   <BaseView>
     <template #heading>Songs View</template>
-    <p v-for="song in songs">{{ song }}</p>
+    <ApiView db-table="songs" :db-table-headings="titles">
+      <template #table-details="{album_id, track, id, name}">
+        <td>{{ album_id }}</td>
+        <td>{{ track }}</td>
+        <td>{{ name }}</td>
+      </template>  
+    </ApiView>
   </BaseView>
 </template>
