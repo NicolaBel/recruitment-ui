@@ -7,9 +7,9 @@ const props = defineProps({
     linkTo: String,
     linkId: Number
 })
-const { linkto, linkid } = toRefs(props)
+const { linkTo, linkId } = toRefs(props)
 
-const url = linkto.value+'/'+linkid.value
+const url = linkTo.value+'/'+linkId.value
 const link = ref(null)
 onMounted(async () => {
     link.value = await apiGet(url)
@@ -17,7 +17,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <RouterLink :to="linkto">
+  <RouterLink :to="linkTo">
     <p>{{ (link === null) ? '' : link.name }}</p>
   </RouterLink>
 </template>
