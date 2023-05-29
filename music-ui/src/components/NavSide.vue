@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <div id="NavSide">
+  <div class="nav-side">
     <RouterLink to="/">
       <h3>Home</h3>
     </RouterLink>
