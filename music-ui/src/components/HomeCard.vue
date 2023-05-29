@@ -4,8 +4,8 @@ import { apiGet } from '../api/dbapi'
 import { RouterLink } from 'vue-router';
 
 const props = defineProps({
-    linkto: String,
-    linkid: Number
+    linkTo: String,
+    linkId: Number
 })
 const { linkto, linkid } = toRefs(props)
 

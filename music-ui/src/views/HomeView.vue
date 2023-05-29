@@ -12,21 +12,21 @@ function getRandom(n) {
   <BaseView>
     <h3>Featured Artists:</h3>
     <div>
-      <HomeCard linkto="artists" :linkid=getRandom(6) />
-      <HomeCard linkto="artists" :linkid=getRandom(6) />
-      <HomeCard linkto="artists" :linkid=getRandom(6) />
+      <HomeCard linkTo="artists" :linkId=getRandom(6) />
+      <HomeCard linkTo="artists" :linkId=getRandom(6) />
+      <HomeCard linkTo="artists" :linkId=getRandom(6) />
     </div>
     <h3>Featured Albums:</h3>
     <div>
-      <HomeCard linkto="albums" :linkid=getRandom(10) />
-      <HomeCard linkto="albums" :linkid=getRandom(10) />
-      <HomeCard linkto="albums" :linkid=getRandom(10) />
+      <HomeCard linkTo="albums" :linkId=getRandom(10) />
+      <HomeCard linkTo="albums" :linkId=getRandom(10) />
+      <HomeCard linkTo="albums" :linkId=getRandom(10) />
     </div>
     <h3>Featured Songs:</h3>
     <div>
-      <HomeCard linkto="songs" :linkid=getRandom(10) />
-      <HomeCard linkto="songs" :linkid=getRandom(10) />
-      <HomeCard linkto="songs" :linkid=getRandom(10) />
+      <HomeCard linkTo="songs" :linkId=getRandom(10) />
+      <HomeCard linkTo="songs" :linkId=getRandom(10) />
+      <HomeCard linkTo="songs" :linkId=getRandom(10) />
     </div>
   </BaseView>
 </template>
