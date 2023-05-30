@@ -1,4 +1,6 @@
 # ui
+Please look in /music-ui/Readme.md for more information
+
 This repo contains the music-service and the UI Test.docx file with instructions on what needs to be done.  The information below describes how to get the music-service running.
 
 # Dependencies
