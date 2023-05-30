@@ -1,7 +1,5 @@
 # music-ui
 
-I watched a YouTube video on how to use Vue Router and the person used Vite, Tailwind and some other stuff. So I installed a bunch of stuff in case I wanted to use it.
-
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
