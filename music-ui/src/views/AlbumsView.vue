@@ -6,7 +6,7 @@ import ApiView from '../components/ApiView.vue';
 let showName= ref(false)
 
 async function doSortReset() {
-    showName.value = false//reset, cannot sorting by this column, at this time
+    showName.value = false//reset, cannot sort by this column, at this time
 }
 const titles = [
     {
@@ -15,7 +15,7 @@ const titles = [
     },
     {
         sortBy: 'name',
-        col: 'Artist Name'
+        col: 'Album Name'
     },
     {
         sortBy: 'year_released',
