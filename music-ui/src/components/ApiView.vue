@@ -4,7 +4,7 @@ import { apiGet } from '../api/dbapi'
 import Paging from '../components/Paging.vue'
 
 //page return limit
-const limit = '5'
+const limit = '10'
 
 const props = defineProps({
     dbTable: String,
@@ -32,6 +32,7 @@ let pageURL = ref(computed({
         return '&_page='+page.value
     }
 }))
+let pageLast = 1
 
 //functions
 async function getItems() {
@@ -40,13 +41,19 @@ async function getItems() {
         items.value = res.body
     } else {
         items.value = null
-        console.log(res)
+        console.log(res)//log the error
     }
-    //console.log(...res.headers)
+    // set the last page number
     if (res.headers.has('Link') && (res.headers.get('Link') != '')) { 
-            const links = res.headers.get('Link')
-            //console.log(links)
-        }
+        // parse out the last link from 
+        //<http://localhost:5000/songs?_limit=5&_page=1>; rel="first", <http://localhost:5000/songs?_limit=5&_page=1>; rel="prev", <http://localhost:5000/songs?_limit=5&_page=3>; rel="next", <http://localhost:5000/songs?_limit=5&_page=19>; rel="last"
+        const links = res.headers.get('Link').split(',').pop().split(';')[0]
+        // get the page param from the link
+        let urlparam = new URLSearchParams(links)
+        pageLast = Number(urlparam.get('_page').replace('>',''))
+    } else {
+        pageLast = 1
+    }
 }
 
 async function pagePrev() {
@@ -81,7 +88,7 @@ onMounted(async () => {
 
 <template>
   <div class="api-view">
-    <Paging :cur-page="page" @prev-Page="pagePrev" @next-Page="pageNext" />
+    <Paging :cur-page="page" :last-page="pageLast" @prev-Page="pagePrev" @next-Page="pageNext" />
     <slot name="extras-top"></slot>
     <table>
       <thead>
