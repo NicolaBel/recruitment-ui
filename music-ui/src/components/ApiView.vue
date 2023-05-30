@@ -32,7 +32,7 @@ let pageURL = ref(computed({
         return '&_page='+page.value
     }
 }))
-let pageLast = 1
+let lastPage = ref(1)
 
 //functions
 async function getItems() {
@@ -50,18 +50,26 @@ async function getItems() {
         const links = res.headers.get('Link').split(',').pop().split(';')[0]
         // get the page param from the link
         let urlparam = new URLSearchParams(links)
-        pageLast = Number(urlparam.get('_page').replace('>',''))
+        lastPage.value = Number(urlparam.get('_page').replace('>',''))
     } else {
-        pageLast = 1
+        lastPage.value = 1
     }
 }
 
+async function pageFirst() {
+    page.value = 1
+    getItems()
+}
 async function pagePrev() {
     page.value--
     getItems()
 }
 async function pageNext() {
     page.value++
+    getItems()
+}
+async function pageLast() {
+    page.value = lastPage.value
     getItems()
 }
 async function doSort(col) {
@@ -88,7 +96,7 @@ onMounted(async () => {
 
 <template>
   <div class="api-view">
-    <Paging :cur-page="page" :last-page="pageLast" @prev-Page="pagePrev" @next-Page="pageNext" />
+    <Paging :cur-page="page" :last-page="lastPage" @first-Page="pageFirst" @prev-Page="pagePrev" @next-Page="pageNext" @last-page="pageLast" />
     <slot name="extras-top"></slot>
     <table>
       <thead>
